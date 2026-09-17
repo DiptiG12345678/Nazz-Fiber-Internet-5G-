@@ -12,17 +12,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Get Date
-      id: get-date
-      run: |
-        echo "date=$(date -u +'%Y%m%d')" >> $GITHUB_OUTPUT
-
-    - name: Cache Buildozer global directory
-      uses: actions/cache@v4
-      with:
-        path: ~/.buildozer
-        key: buildozer-global-${{ hashFiles('buildozer.spec') }}-${{ steps.get-date.outputs.date }}
-
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
@@ -35,8 +24,10 @@ jobs:
         pip install --upgrade pip
         pip install buildozer cython virtualenv
 
-    - name: Build with Buildozer
+    - name: Build with Buildozer (Using Github Android Tools)
       run: |
+        export ANDROID_SDK_ROOT=$ANDROID_HOME
+        export ANDROID_NDK_ROOT=$ANDROID_HOME/ndk/25.2.9519653
         yes | buildozer -v android debug
 
     - name: Upload APK Artifact
