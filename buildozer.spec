@@ -20,5 +20,5 @@ android.private_storage = True
 p4a.branch = master
 
 [buildozer]
-log_level = 2
+log_level = 1
 warn_on_root = 1
