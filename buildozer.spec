@@ -9,6 +9,7 @@ requirements = python3,kivy
 orientation = portrait
 osx.kivy_version = 2.3.0
 fullscreen = 0
+icon.filename = logo.png.png
 android.permissions = INTERNET
 android.api = 33
 android.minapi = 21
