@@ -20,15 +20,15 @@ jobs:
     - name: Install System Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y libtool pkg-config autoconf automake libffi-dev ccache gettext
+        sudo apt-get install -y libtool pkg-config autoconf automake libffi-dev ccache gettext git zip unzip
         pip install --upgrade pip
-        pip install cython==0.29.36 virtualenv
+        pip install buildozer cython virtualenv
 
     - name: Build Android APK with Buildozer
-      uses: subfuzion/buildozer-action@v1
-      with:
-        command: 'buildozer -v android debug'
-        repository_path: '.'
+      run: |
+        export ANDROID_SDK_ROOT=$ANDROID_HOME
+        export ANDROID_NDK_ROOT=$ANDROID_HOME/ndk/25.2.9519653
+        yes | buildozer -v android debug
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
