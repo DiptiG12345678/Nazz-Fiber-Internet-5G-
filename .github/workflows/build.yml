@@ -12,33 +12,21 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up CCache
-      uses: hendrikmuhs/ccache-action@v1.2
-      with:
-        key: ${{ runner.os }}-buildozer
-
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
 
-    - name: Install Dependencies
+    - name: Install Buildozer and Dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y libtool pkg-config autoconf automake libffi-dev ccache gettext
         pip install --upgrade pip
-        pip install buildozer cython virtualenv
+        pip install buildozer cython==0.29.36 virtualenv
 
-    - name: Build with Buildozer
-      run: |
-        export ANDROID_SDK_ROOT=$ANDROID_HOME
-        export ANDROID_NDK_ROOT=$ANDROID_HOME/ndk/25.2.9519653
-        export PATH="/usr/lib/ccache:$PATH"
-        yes | buildozer -v android debug
-
-    - name: Upload APK Artifact
-      uses: actions/upload-artifact@v4
+    - name: Build Android APK with Buildozer
+      uses: ActionKit/buildozer-action@v1
       with:
-        name: package
-        path: bin/*.apk
-        
+        buildozer_version: 'stable'
+        command: 'buildozer -v android debug'
+        repository_path: '.'
