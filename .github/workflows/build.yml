@@ -12,6 +12,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Set up CCache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: ${{ runner.os }}-buildozer
+
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
@@ -24,10 +29,11 @@ jobs:
         pip install --upgrade pip
         pip install buildozer cython virtualenv
 
-    - name: Build with Buildozer (Using Github Android Tools)
+    - name: Build with Buildozer
       run: |
         export ANDROID_SDK_ROOT=$ANDROID_HOME
         export ANDROID_NDK_ROOT=$ANDROID_HOME/ndk/25.2.9519653
+        export PATH="/usr/lib/ccache:$PATH"
         yes | buildozer -v android debug
 
     - name: Upload APK Artifact
@@ -35,3 +41,4 @@ jobs:
       with:
         name: package
         path: bin/*.apk
+        
