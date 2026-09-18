@@ -7,7 +7,8 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    # یہاں ہم نے ورژن کو بالکل لیٹسٹ کر دیا ہے تاکہ Node 24 کا ایرر نہ آئے
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
